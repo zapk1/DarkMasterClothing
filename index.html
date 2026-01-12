@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ForexEdge</title>
 
-    <link rel="manifest" href__="manifest.json">
+    <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#2196f3">
 
-    <link rel="icon" href__="https://i.postimg.cc/FR1kt6B0/Chat-GPT-Image-Nov-6-2025-12-25-21-AM.png" type="image/png">
+    <link rel="icon" href="https://i.postimg.cc/KzM5WXjp/IMG-1513.png" type="image/png">
 
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -1736,7 +1736,7 @@
     <div class="top-bar">
         <div class="top-bar-left">
             <div class="logo">
-                <img src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/user_690ba922fbe430d3664faeaa/fa08d83cb_Screenshot_20250930_020839_Gallery.jpg" alt="ForexEdge">
+                <img src="https://i.postimg.cc/KzM5WXjp/IMG-1513.png" alt="ForexEdge">
                 <span>ForexEdge</span>
             </div>
             <div class="symbol-selector">
@@ -1755,7 +1755,7 @@
 
         <div class="top-bar-right">
             <div class="user-balance" id="userBalance" style="display:none;">
-                <span>💰</span>
+                <span></span>
                 <span id="balanceAmount">R0.00</span>
             </div>
 
@@ -1923,13 +1923,13 @@
             </div>
 
             <div class="panel-section">
-                <div class="panel-title">💰 Quick Actions</div>
-                <button class="modal-btn success" style="width:100%;margin-bottom:10px;" onclick="openDeposit()">💳 Deposit Funds</button>
+                <div class="panel-title">Quick Actions</div>
+                <button class="modal-btn success" style="width:100%;margin-bottom:10px;" onclick="openDeposit()">Deposit Funds</button>
                 <button class="modal-btn secondary" style="width:100%;" onclick="openWithdrawal()">📤 Submit Withdrawal</button>
             </div>
 
             <div class="panel-section">
-                <div class="panel-title">🎯 Trading Rules</div>
+                <div class="panel-title">Trading Rules</div>
                 <p style="font-size:11px;color:var(--text-secondary);line-height:1.6;">
                     • Minimum deposit: R50<br>
                     • Maximum deposit: R100,000<br>
@@ -2004,7 +2004,7 @@
             <button class="trade-btn-top sell" style="padding:16px;font-size:16px;" onclick="openTradeModalSell();closeMobilePanel();">📉 SELL</button>
             <button class="trade-btn-top buy" style="padding:16px;font-size:16px;" onclick="openTradeModalBuy();closeMobilePanel();">📈 BUY</button>
         </div>
-        <button class="modal-btn success" style="width:100%;margin-bottom:10px;" onclick="openDeposit();closeMobilePanel();">💳 Deposit Funds</button>
+        <button class="modal-btn success" style="width:100%;margin-bottom:10px;" onclick="openDeposit();closeMobilePanel();"> Deposit Funds</button>
         <button class="modal-btn secondary" style="width:100%;" onclick="openWithdrawal();closeMobilePanel();">📤 Withdraw</button>
     </div>
 
@@ -2136,7 +2136,7 @@
     <!-- Deposit Modal -->
     <div class="fullpage-modal" id="depositModal">
         <div class="fullpage-header">
-            <span class="fullpage-title">💳 Deposit Funds</span>
+            <span class="fullpage-title"> Deposit Funds</span>
             <button class="fullpage-close" onclick="closeDeposit()">✕</button>
         </div>
         <div class="fullpage-content">
@@ -2151,7 +2151,7 @@
             </div>
 
             <div class="deposit-note">
-                <p>💡 <strong>Minimum deposit:</strong> R50 to R100,000<br><br>
+                <p><strong>Minimum deposit:</strong> R2000 to R100,000<br><br>
                 Deposit into the bank account above for your trading account to be credited within 10 minutes. Use your email as reference.</p>
             </div>
 
@@ -2179,12 +2179,12 @@
     <!-- Withdrawal Modal -->
     <div class="fullpage-modal" id="withdrawalModal">
         <div class="fullpage-header">
-            <span class="fullpage-title">📤 Submit Withdrawal</span>
+            <span class="fullpage-title"> Submit Withdrawal</span>
             <button class="fullpage-close" onclick="closeWithdrawal()">✕</button>
         </div>
         <div class="fullpage-content">
             <div class="deposit-note" style="background:rgba(246, 70, 93, 0.1);border-color:var(--accent-red);">
-                <p style="color:var(--accent-red);">⏰ Withdrawals are processed within 24 hours to verified bank accounts.</p>
+                <p style="color:var(--accent-red);"> Withdrawals are processed within 24 hours to verified bank accounts.</p>
             </div>
 
             <div class="input-group">
@@ -2225,7 +2225,7 @@
             </div>
 
             <button class="modal-btn primary" style="width:100%;padding:14px;font-size:15px;background:var(--accent-red);" onclick="submitWithdrawal()">
-                📤 Submit Withdrawal Request
+                 Submit Withdrawal Request
             </button>
         </div>
     </div>
@@ -2234,7 +2234,7 @@
     <div class="modal" id="tradeModal">
         <div class="modal-content">
             <button class="modal-close" onclick="closeTradeModal()">✕</button>
-            <div class="modal-title" id="tradeModalTitle">📈 Place BUY Order</div>
+            <div class="modal-title" id="tradeModalTitle"> Place BUY Order</div>
             <p style="font-size:12px;color:var(--text-secondary);margin-bottom:18px;">
                 Your potential profit: <strong style="color:var(--accent-green);">25x your investment</strong>
             </p>
@@ -2255,7 +2255,7 @@
     <!-- Admin Panel -->
     <div class="admin-panel" id="adminPanel">
         <div class="admin-header">
-            <span class="admin-title">⚡ ForexEdge Admin Panel</span>
+            <span class="admin-title"> ForexEdge Admin Panel</span>
             <div style="display:flex;gap:10px;flex-wrap:wrap;">
                 <button class="chart-action-btn" onclick="closeAdminPanel()">✕ Close</button>
                 <button class="chart-action-btn danger" onclick="logoutAdmin()">Logout</button>
@@ -3996,3 +3996,4 @@ window.creditUser = async function(userId) {
     </script>
 </body>
 </html>
+
