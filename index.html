@@ -1903,7 +1903,7 @@
         <!-- Right Panel -->
         <div class="right-panel">
             <div class="panel-section">
-                <div class="panel-title"> Market Info</div>
+                <div class="panel-title">📊 Market Info</div>
                 <div class="info-row">
                     <span class="info-label">Spread</span>
                     <span class="info-value">2.0 pips</span>
@@ -2001,8 +2001,8 @@
             <button class="text-overlay-close" onclick="closeMobilePanel()">✕</button>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
-            <button class="trade-btn-top sell" style="padding:16px;font-size:16px;" onclick="openTradeModalSell();closeMobilePanel();">📉 SELL</button>
-            <button class="trade-btn-top buy" style="padding:16px;font-size:16px;" onclick="openTradeModalBuy();closeMobilePanel();">📈 BUY</button>
+            <button class="trade-btn-top sell" style="padding:16px;font-size:16px;" onclick="openTradeModalSell();closeMobilePanel();"> SELL</button>
+            <button class="trade-btn-top buy" style="padding:16px;font-size:16px;" onclick="openTradeModalBuy();closeMobilePanel();"> BUY</button>
         </div>
         <button class="modal-btn success" style="width:100%;margin-bottom:10px;" onclick="openDeposit();closeMobilePanel();"> Deposit Funds</button>
         <button class="modal-btn secondary" style="width:100%;" onclick="openWithdrawal();closeMobilePanel();"> Withdraw</button>
@@ -2066,7 +2066,7 @@
     <div class="modal" id="loginModal">
         <div class="modal-content">
             <button class="modal-close" onclick="closeLogin()">✕</button>
-            <div class="modal-title"> Welcome Back</div>
+            <div class="modal-title">🔐 Welcome Back</div>
             <div class="input-group">
                 <label>Email</label>
                 <input type="email" id="loginEmail" placeholder="your@email.com">
@@ -2283,12 +2283,12 @@
                             <div class="stat-label">Total Traders</div>
                         </div>
                         <div class="stat-card" onclick="showAdminSection('orders', document.querySelector('.admin-menu-item:nth-child(4)'))">
-                            <div class="stat-icon green">📈</div>
+                            <div class="stat-icon green"></div>
                             <div class="stat-value" id="totalBuyOrders">0</div>
                             <div class="stat-label">Buy Orders Today</div>
                         </div>
                         <div class="stat-card" onclick="showAdminSection('orders', document.querySelector('.admin-menu-item:nth-child(4)'))">
-                            <div class="stat-icon red">📉</div>
+                            <div class="stat-icon red"></div>
                             <div class="stat-value" id="totalSellOrders">0</div>
                             <div class="stat-label">Sell Orders Today</div>
                         </div>
@@ -2488,7 +2488,7 @@
     <div class="modal" id="timeframeModal">
         <div class="modal-content">
             <button class="modal-close" onclick="closeTimeframeModal()">✕</button>
-            <div class="modal-title">📊 Timeframe Notice</div>
+            <div class="modal-title"> Timeframe Notice</div>
             <p style="font-size:13px;color:var(--text-secondary);line-height:1.6;">
                 Charts are only available in <strong>Daily (1D)</strong> timeframe to ensure accurate predictions and sustainable trading results.
             </p>
@@ -3461,7 +3461,7 @@ async function refreshUserBalance() {
                 isAdmin = true;
                 document.querySelectorAll('.admin-only').forEach(el => el.classList.add('show'));
                 closeSettings();
-                alert('✅ Admin access granted!');
+                alert(' Admin access granted!');
             } else {
                 alert('❌ Incorrect password');
             }
