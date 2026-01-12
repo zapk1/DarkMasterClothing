@@ -1903,7 +1903,7 @@
         <!-- Right Panel -->
         <div class="right-panel">
             <div class="panel-section">
-                <div class="panel-title">📊 Market Info</div>
+                <div class="panel-title"> Market Info</div>
                 <div class="info-row">
                     <span class="info-label">Spread</span>
                     <span class="info-value">2.0 pips</span>
@@ -2066,7 +2066,7 @@
     <div class="modal" id="loginModal">
         <div class="modal-content">
             <button class="modal-close" onclick="closeLogin()">✕</button>
-            <div class="modal-title">🔐 Welcome Back</div>
+            <div class="modal-title"> Welcome Back</div>
             <div class="input-group">
                 <label>Email</label>
                 <input type="email" id="loginEmail" placeholder="your@email.com">
@@ -2121,7 +2121,7 @@
     <div class="modal" id="settingsModal">
         <div class="modal-content">
             <button class="modal-close" onclick="closeSettings()">✕</button>
-            <div class="modal-title">🔐 Admin Access</div>
+            <div class="modal-title"> Admin Access</div>
             <div class="input-group">
                 <label>Admin Password</label>
                 <input type="password" id="adminPasswordInput" placeholder="Enter admin password">
@@ -3337,7 +3337,7 @@ async function refreshUserBalance() {
                 const list = document.getElementById('notificationsList');
                 list.innerHTML = trades.map(trade => `
                     <div class="notification-item">
-                        <div class="notification-icon ${trade.type}">${trade.type === 'buy' ? '📈' : '📉'}</div>
+                        <div class="notification-icon ${trade.type}">${trade.type === 'buy' ? '' : ''}</div>
                         <div class="notification-content">
                             <h4>${trade.type.toUpperCase()} Order</h4>
                             <p>Amount: R${trade.amount} · Potential: R${trade.amount * 25}</p>
@@ -3405,7 +3405,7 @@ async function refreshUserBalance() {
         window.openTradeModalSell = function() {
             if (!currentUser) { alert('Please log in first'); openLogin(); return; }
             currentTradeType = 'sell';
-            document.getElementById('tradeModalTitle').textContent = '📉 Place SELL Order';
+            document.getElementById('tradeModalTitle').textContent = ' Place SELL Order';
             document.getElementById('tradeSubmitBtn').style.background = 'var(--accent-red)';
             document.getElementById('tradeBalance').textContent = 'R' + (currentUser.balance || 0).toFixed(2);
             document.getElementById('tradeModal').classList.add('open');
@@ -3414,7 +3414,7 @@ async function refreshUserBalance() {
         window.openTradeModalBuy = function() {
             if (!currentUser) { alert('Please log in first'); openLogin(); return; }
             currentTradeType = 'buy';
-            document.getElementById('tradeModalTitle').textContent = '📈 Place BUY Order';
+            document.getElementById('tradeModalTitle').textContent = ' Place BUY Order';
             document.getElementById('tradeSubmitBtn').style.background = 'var(--accent-green)';
             document.getElementById('tradeBalance').textContent = 'R' + (currentUser.balance || 0).toFixed(2);
             document.getElementById('tradeModal').classList.add('open');
@@ -3996,6 +3996,7 @@ window.creditUser = async function(userId) {
     </script>
 </body>
 </html>
+
 
 
 
