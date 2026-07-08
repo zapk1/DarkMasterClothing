@@ -1,11 +1,11 @@
 {
-  "name": "ForexEdge",
-  "short_name": "FxEdge",
-  "description": "ForexEdge is a next-generation online investment platform designed to help traders and investors maximize profits through intelligent forex and digital asset strategies",
+  "name": "DarkMasterClothing",
+  "short_name": "DarkMasterClothing",
+  "description": "Dark Master Clothing a South African Clothing for future and calling dignity",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#C3FF00",
-  "theme_color": "#8AFFE8",
+  "background_color": "#FFFFFF",
+  "theme_color": "#FFFFFF",
   "icons": [
     {
       "src": "https://i.postimg.cc/KzM5WXjp/IMG-1513.png",
