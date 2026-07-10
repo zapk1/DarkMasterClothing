@@ -923,12 +923,25 @@ function renderGrid() {
     const stockClass = p.stock > 10 ? 'in' : p.stock > 0 ? 'low' : 'out';
     const stockText = p.stock > 10 ? 'In Stock' : p.stock > 0 ? 'Only ' + p.stock + ' left' : 'Sold Out';
     return `
-    <div class="product-card" onclick="showDetail('${p.id}')" style="animation: fadeUp 0.4s ease ${i * 0.08}s both">
+    
+  <div class="product-card" onclick="showDetail('${p.id}')" style="animation: fadeUp 0.4s ease ${i * 0.08}s both">
       <div class="product-img-wrap">
         ${p.isNew ? '<span class="badge-new">New</span>' : ''}
-        <img src="${p.image}" alt="${p.name}" loading="lazy">
-        <div class="quick-add">Quick View</div>
-      </div>
+        <div class="product-carousel" id="carousel-${p.id}" onscroll="updateCarouselDots('${p.id}')">
+          ${((p.images && p.images.length) ? p.images : [p.image]).map(img => 
+            '<img src="' + img + '" alt="' + (p.name || '') + '" loading="lazy">'
+          ).join('')}
+        </div>
+        ${((p.images && p.images.length > 1) ? 
+          '<button class="product-carousel-arrow prev" onclick="carouselScroll(\'carousel-' + p.id + '\', -1, event)"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>' +
+          '<button class="product-carousel-arrow next" onclick="carouselScroll(\'carousel-' + p.id + '\', 1, event)"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>' +
+          '<div class="product-carousel-dots" id="dots-carousel-' + p.id + '">' + 
+            ((p.images || [p.image]).map((_, di) => '<button class="product-carousel-dot' + (di === 0 ? ' active' : '') + '" onclick="carouselGoTo(\'carousel-' + p.id + '\', ' + di + ', event)"></button>').join('')) +
+          '</div>'
+          : '')}
+          
+          
+        </div>
       <div class="product-info">
         <h3 class="product-name">${p.name}</h3>
         <p class="product-cat">${p.colors.map(c => '<span class="product-color-dot" style="background:' + colorHex(c) + '"></span>').join('')} ${p.category}</p>
@@ -937,8 +950,14 @@ function renderGrid() {
         <div class="product-badge-row">
           <span class="product-stock-badge ${stockClass}">${stockText}</span>
         </div>
+        <button class="card-add-btn" onclick="quickAddToCart('${p.id}', event)">
+ <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+          Add to Cart
+        </button>
       </div>
     </div>
+    
+    
   `;
   }).join('');
 }
@@ -970,16 +989,18 @@ function showDetail(id) {
   selectedQty = 1;
   document.getElementById('detailCrumb').textContent = p.name;
   document.getElementById('detailGrid').innerHTML = `
-    <div>
-      <div class="detail-img" onclick="openImageViewer('${p.image}')">
-        <img src="${p.image}" alt="${p.name}" id="mainDetailImg">
+  
+        <div>
+      <div class="detail-img" id="detailMainImgWrap" onclick="openImageViewer(document.getElementById('mainDetailImg').src)">
+        <img src="${(p.images && p.images[0]) || p.image}" alt="${p.name}" id="mainDetailImg">
       </div>
-      <div class="detail-thumbs">
-        <div class="detail-thumb active" onclick="selectThumb(this, '${p.image}')"><img src="${p.image}" alt=""></div>
-        <div class="detail-thumb" onclick="selectThumb(this, '${p.image}')"><img src="${p.image}" alt=""></div>
-        <div class="detail-thumb" onclick="selectThumb(this, '${p.image}')"><img src="${p.image}" alt=""></div>
+      <div class="detail-thumbs" id="detailThumbs">
+        ${((p.images && p.images.length) ? p.images : [p.image]).map((img, idx) => 
+          '<div class="detail-thumb' + (idx === 0 ? ' active' : '') + '" onclick="selectThumb(this, \'' + img.replace(/'/g, "\\'") + '\')"><img src="' + img + '" alt=""></div>'
+        ).join('')}
       </div>
     </div>
+    
     <div class="detail-info">
       <h1>${p.name}</h1>
       <p class="detail-price">${formatPrice(p.price)}</p>
@@ -1035,7 +1056,10 @@ function showDetail(id) {
 function selectThumb(el, src) {
   document.querySelectorAll('.detail-thumb').forEach(t => t.classList.remove('active'));
   el.classList.add('active');
-  document.getElementById('mainDetailImg').src = src;
+  var mainImg = document.getElementById('mainDetailImg');
+  if (mainImg) mainImg.src = src;
+  var wrap = document.getElementById('detailMainImgWrap');
+  if (wrap) wrap.setAttribute('onclick', "openImageViewer('" + src.replace(/'/g, "\\'") + "')");
 }
 
 function selectSize(el, size) {
@@ -1075,6 +1099,15 @@ function closeImageViewer(e) {
   if (e && e.target.tagName === 'IMG') return;
   document.getElementById('imageViewer').classList.remove('open');
   document.body.style.overflow = '';
+}
+
+// ===== QUICK ADD FROM CARD =====
+function quickAddToCart(id, event) {
+  if (event) { event.stopPropagation(); event.preventDefault(); }
+  const p = products.find(x => x.id === id);
+  if (!p) return;
+  if (!p.sizes || !p.sizes.length) { showToast('No sizes available', false); return; }
+  addToCart(p, p.sizes[0], (p.colors && p.colors[0]) || 'Default', 1);
 }
 
 // ===== CART =====
@@ -1277,12 +1310,13 @@ function proceedToCheckout() {
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
           Bank Details (EFT)
         </h4>
-        <div style="display:flex;justify-content:space-between;padding:7px 0;font-size:13px;border-bottom:1px dashed var(--border);"><span style="color:var(--muted);">Bank</span><strong>FNB</strong></div>
+        <div style="display:flex;justify-content:space-between;padding:7px 0;font-size:13px;border-bottom:1px dashed var(--border);"><span style="color:var(--muted);">Bank</span><strong>GoTyme Bank</strong></div>
         <div style="display:flex;justify-content:space-between;padding:7px 0;font-size:13px;border-bottom:1px dashed var(--border);"><span style="color:var(--muted);">Account Name</span><strong>Dark Master Clothing</strong></div>
-        <div style="display:flex;justify-content:space-between;padding:7px 0;font-size:13px;border-bottom:1px dashed var(--border);"><span style="color:var(--muted);">Account Number</span><strong>6234 5678 90</strong></div>
-        <div style="display:flex;justify-content:space-between;padding:7px 0;font-size:13px;border-bottom:1px dashed var(--border);"><span style="color:var(--muted);">Branch Code</span><strong>250 655</strong></div>
+        <div style="display:flex;justify-content:space-between;padding:7px 0;font-size:13px;border-bottom:1px dashed var(--border);"><span style="color:var(--muted);">Account Number</span><strong>5300 3587 427</strong></div>
+        <div style="display:flex;justify-content:space-between;padding:7px 0;font-size:13px;border-bottom:1px dashed var(--border);"><span style="color:var(--muted);">Branch Code</span><strong>678 910</strong></div>
         <div style="display:flex;justify-content:space-between;padding:7px 0;font-size:13px;border-bottom:1px dashed var(--border);"><span style="color:var(--muted);">Account Type</span><strong>Business Cheque</strong></div>
         <div style="display:flex;justify-content:space-between;padding:7px 0;font-size:13px;"><span style="color:var(--muted);">Reference</span><strong style="color:#FF6B00;">DM-${Date.now().toString().slice(-6)}</strong></div>
+
       </div>
 
       <div style="background:#fff3e0;border:1px solid #ffe0c2;border-radius:12px;padding:14px;margin-bottom:16px;display:flex;gap:10px;align-items:flex-start;">
@@ -1581,7 +1615,8 @@ function handleSearch(query) {
   grid.innerHTML = filtered.length ? filtered.map((p, i) => {
     const stockClass = p.stock > 10 ? 'in' : p.stock > 0 ? 'low' : 'out';
     const stockText = p.stock > 10 ? 'In Stock' : p.stock > 0 ? 'Only ' + p.stock + ' left' : 'Sold Out';
-    return `<div class="product-card" onclick="showDetail('${p.id}')" style="animation:fadeUp 0.4s ease ${i * 0.08}s both"><div class="product-img-wrap">${p.isNew ? '<span class="badge-new">New</span>' : ''}<img src="${p.image}" alt="${p.name}" loading="lazy"><div class="quick-add">Quick View</div></div><div class="product-info"><h3 class="product-name">${p.name}</h3><p class="product-cat">${p.colors.map(c => '<span class="product-color-dot" style="background:' + colorHex(c) + '"></span>').join('')} ${p.category}</p><p class="product-price">${formatPrice(p.price)}</p><p class="product-desc-short">${p.desc || ''}</p><div class="product-badge-row"><span class="product-stock-badge ${stockClass}">${stockText}</span></div></div></div>`;
+    const imgs = (p.images && p.images.length) ? p.images : [p.image];
+    return `<div class="product-card" onclick="showDetail('${p.id}')" style="animation:fadeUp 0.4s ease ${i * 0.08}s both"></div><div class="product-info"><h3 class="product-name">${p.name}</h3><p class="product-cat">${p.colors.map(c => '<span class="product-color-dot" style="background:' + colorHex(c) + '"></span>').join('')} ${p.category}</p><p class="product-price">${formatPrice(p.price)}</p><p class="product-desc-short">${p.desc || ''}</p><div class="product-badge-row"><span class="product-stock-badge ${stockClass}">${stockText}</span></div><button class="card-add-btn" onclick="quickAddToCart('${p.id}', event)"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 01-8 0"/></svg> Add to Cart</button></div></div>`;
   }).join('') : '<p style="grid-column:1/-1;text-align:center;padding:60px;color:var(--muted);">No products found.</p>';
 }
 
@@ -1914,6 +1949,42 @@ window.addEventListener('scroll', function() {
   }
 });
 
+// ===== PRODUCT CAROUSEL HELPERS =====
+function carouselScroll(carouselId, direction, event) {
+  if (event) { event.stopPropagation(); event.preventDefault(); }
+  var carousel = document.getElementById(carouselId);
+  if (!carousel) return;
+  carousel.scrollBy({ left: direction * carousel.offsetWidth, behavior: 'smooth' });
+}
+
+function carouselGoTo(carouselId, index, event) {
+  if (event) { event.stopPropagation(); event.preventDefault(); }
+  var carousel = document.getElementById(carouselId);
+  if (!carousel) return;
+  var imgs = carousel.querySelectorAll('img');
+  if (imgs[index]) {
+    imgs[index].scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
+  }
+}
+
+function updateCarouselDots(carouselId) {
+  var carousel = document.getElementById(carouselId);
+  var dotsWrap = document.getElementById('dots-' + carouselId);
+  if (!carousel || !dotsWrap) return;
+  var imgs = carousel.querySelectorAll('img');
+  var dots = dotsWrap.querySelectorAll('.product-carousel-dot');
+  if (!imgs.length || !dots.length) return;
+  var scrollLeft = carousel.scrollLeft;
+  var cardWidth = carousel.offsetWidth;
+  var activeIndex = Math.round(scrollLeft / cardWidth);
+  if (activeIndex < 0) activeIndex = 0;
+  if (activeIndex >= imgs.length) activeIndex = imgs.length - 1;
+  dots.forEach(function(d, i) {
+    if (i === activeIndex) d.classList.add('active');
+    else d.classList.remove('active');
+  });
+}
+
 // ===== INIT =====
 detectLocation();
 loadProducts();
@@ -1926,6 +1997,92 @@ restoreCheckoutState();
 
 <style>
 @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ===== PRODUCT CARD IMAGE CAROUSEL ===== */
+.product-img-wrap { position: relative; overflow: hidden; }
+.product-carousel {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  height: 100%;
+}
+.product-carousel::-webkit-scrollbar { display: none; }
+.product-carousel img {
+  flex: 0 0 100%;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  scroll-snap-align: center;
+  pointer-events: none;
+}
+.product-carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.92);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 4;
+  opacity: 0;
+  transition: opacity 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+.product-img-wrap:hover .product-carousel-arrow { opacity: 1; }
+.product-carousel-arrow.prev { left: 8px; }
+.product-carousel-arrow.next { right: 8px; }
+.product-carousel-dots {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 5px;
+  z-index: 4;
+}
+.product-carousel-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.5);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.product-carousel-dot.active { background: #fff; }
+
+/* ===== PRODUCT CARD ADD-TO-CART BUTTON ===== */
+.card-add-btn {
+  width: 100%;
+  margin-top: 12px;
+  padding: 11px 14px;
+  background: #FF6B00;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+}
+.card-add-btn:hover { background: #e85d00; }
+.card-add-btn:active { transform: scale(0.98); }
+.card-add-btn svg { flex-shrink: 0; }
 </style>
+
 </body>
 </html>
