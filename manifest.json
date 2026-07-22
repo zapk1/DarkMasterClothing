@@ -1,23 +1,17 @@
 {
-  "name": "DarkMasterClothing",
-  "short_name": "DarkMasterClothing",
-  "description": "Dark Master Clothing a South African Clothing for future and calling dignity",
-  "start_url": "./index.html",
+  "name": "Dark Master Clothing",
+  "short_name": "Dark Master",
+  "description": "Premium heavyweight tees, made and printed in South Africa.",
+  "start_url": "/",
   "display": "standalone",
-  "background_color": "#FFFFFF",
-  "theme_color": "#FFFFFF",
+  "background_color": "#ffffff",
+  "theme_color": "#FF6B00",
   "icons": [
     {
-      "src": "https://i.postimg.cc/KzM5WXjp/IMG-1513.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "https://i.postimg.cc/KzM5WXjp/IMG-1513.png",
+      "src": "https://media.base44.com/images/public/user_689f8b56ad1429582e28fa82/3c430d5ec_Screenshot_20260722_035633_Gallery.jpg",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/jpeg",
+      "purpose": "any maskable"
     }
   ]
 }
-
-
