@@ -5,7 +5,7 @@
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#FF6B00",
+  "theme_color": "#ffffff",
   "icons": [
     {
       "src": "https://media.base44.com/images/public/user_689f8b56ad1429582e28fa82/3c430d5ec_Screenshot_20260722_035633_Gallery.jpg",
